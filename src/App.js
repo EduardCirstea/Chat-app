@@ -7,15 +7,13 @@ function App() {
   // const SLACK_API_TOKEN = 'dsada'
   const [message, setMessage] = useState('')
   const [threadTs, setThreadTS] = useState(null)
-  const [messages, setMessages] = useState([
-    { text: 'hello maria, ce mai faci?' },
-  ])
+  const [messages, setMessages] = useState([])
 
   const sendMessage = async () => {
     const res = await axios.post(
       'https://slack-chat.testenv.ro/api/send-message',
       {
-        channel: 'CHANNEL_ID',
+        // channel: 'CHANNEL_ID',
         message: message,
         thread_ts: threadTs,
       },
@@ -25,7 +23,7 @@ function App() {
         },
       }
     )
-    setThreadTS(res.data.ts)
+    setThreadTS(res.data.thread_ts)
     setMessage('')
   }
 
@@ -49,7 +47,7 @@ function App() {
   // useEffect(() => {
   //   if (threadTs) {
   //     getMessages()
-  //     const intervalId = setInterval(getMessages, 1000)
+  //     const intervalId = setInterval(getMessages, 10000)
   //     return () => clearInterval(intervalId)
   //   }
   // }, [threadTs])
@@ -81,8 +79,8 @@ function App() {
   return (
     <div className="container">
       {messages.map((message) => (
-        <div className="message" key={message.ts}>
-          <p>{message.text}</p>
+        <div className="message" key={message.thread_ts}>
+          <p>{message.message}</p>
         </div>
       ))}
       <form onSubmit={onSubmit} className="form">
